@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+node_modules/
+.pytest_cache/
+.DS_Store
+Thumbs.db
+
+# Local test reports and transient capture evidence
+docs/browser-results.json
+docs/automated-tests.txt
+docs/runtime-evidence.json
+screenshots/originals/
+screenshots/capture-manifest.json

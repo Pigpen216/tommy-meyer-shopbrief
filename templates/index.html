@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Local assets avoid remote dependencies; viewport metadata supports the phone layout. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ec">
+  <meta name="description" content="ShopBrief turns a maker project brief into an ordered series of practical next actions.">
+  <title>ShopBrief · A clearer route to made</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <!-- The skip link gives keyboard users a direct route past the brand header. -->
+  <a class="skip-link" href="#main-content">Skip to workspace</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="ShopBrief home">
+      <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span>ShopBrief<span class="brand-period">.</span></span>
+    </a>
+    <span class="header-label">A clearer route to made</span>
+    <span class="workspace-label"><span class="status-dot" aria-hidden="true"></span>Your project workspace</span>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <!-- The introduction explains the product before the maker enters a project brief. -->
+    <section class="page-intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow"><span class="small-rule" aria-hidden="true"></span>Less guesswork. More making.</p>
+        <h1 id="page-title">Make the next move<br><em>a good one.</em></h1>
+      </div>
+      <p class="intro-copy">Give your idea a clear brief. Get a practical route forward, one useful action at a time.</p>
+    </section>
+
+    <div class="workspace-grid">
+      <!-- Four labeled input groups preserve the original proof-of-concept intake. -->
+      <aside class="brief-panel" aria-labelledby="brief-heading">
+        <div class="panel-heading">
+          <span class="section-number" aria-hidden="true">01</span>
+          <div><p class="eyebrow">Start here</p><h2 id="brief-heading">Your project brief</h2></div>
+        </div>
+        <p class="panel-description">What are you making, and what are you working with?</p>
+        <!-- I use field-linked script errors with server validation, so errors can identify and focus the affected input. -->
+        <form id="brief-form" novalidate>
+          <div class="field-group">
+            <label for="goal"><span>Project goal</span><span class="field-tag">Required</span></label>
+            <textarea id="goal" name="goal" rows="3" maxlength="600" required aria-describedby="goal-help goal-error" placeholder="What do you want to make?"></textarea>
+            <p class="field-help" id="goal-help">Describe the result you want.</p>
+            <p id="goal-error" class="field-error" hidden></p>
+          </div>
+          <div class="field-group">
+            <label for="tools">Tools available</label>
+            <textarea id="tools" name="tools" rows="2" maxlength="1200" aria-describedby="tools-help tools-error" placeholder="Drill, hand saw, clamps…"></textarea>
+            <p class="field-help" id="tools-help">Separate items with commas or new lines.</p>
+            <p id="tools-error" class="field-error" hidden></p>
+          </div>
+          <div class="field-group">
+            <label for="materials">Materials on hand</label>
+            <textarea id="materials" name="materials" rows="2" maxlength="1200" aria-describedby="materials-error" placeholder="Plywood, screws, paint…"></textarea>
+            <p id="materials-error" class="field-error" hidden></p>
+          </div>
+          <div class="field-group">
+            <label for="constraints">Limits &amp; must-haves</label>
+            <textarea id="constraints" name="constraints" rows="2" maxlength="1200" aria-describedby="constraints-help constraints-error" placeholder="Space, budget, deadline, dimensions…"></textarea>
+            <p class="field-help" id="constraints-help">Leave unknowns blank. They become things to confirm.</p>
+            <p id="constraints-error" class="field-error" hidden></p>
+          </div>
+          <p id="form-message" class="form-message" role="alert" hidden></p>
+          <button id="generate-plan" class="button button-primary" type="submit"><span>Build my project plan</span><span aria-hidden="true">↗</span></button>
+          <button id="example-button" class="example-button" type="button">Try a paint rack example <span aria-hidden="true">→</span></button>
+        </form>
+        <div class="storage-note"><svg aria-hidden="true" viewBox="0 0 20 20"><rect x="4" y="8" width="12" height="9" rx="2"></rect><path d="M6.5 8V5.5a3.5 3.5 0 0 1 7 0V8"></path></svg><span id="save-status">Your plan and progress stay in this browser.</span></div>
+      </aside>
+
+      <section class="plan-workspace" aria-label="Project plan">
+        <!-- A blank workspace remains truthful until the maker requests an actual plan. -->
+        <div id="empty-state" class="empty-state">
+          <div class="empty-drawing" aria-hidden="true"><div class="drawing-grid"></div><div class="drawing-frame"><span class="drawing-line line-one"></span><span class="drawing-line line-two"></span><span class="drawing-line line-three"></span><span class="drawing-point point-one"></span><span class="drawing-point point-two"></span><span class="drawing-point point-three"></span></div><span class="drawing-label">IDEA → ACTION → MADE</span></div>
+          <p class="eyebrow">A little clarity goes a long way</p>
+          <h2>Your idea.<br>A route forward.</h2>
+          <p>Add your project brief to see the requirements, questions to resolve, and an ordered set of suggested actions.</p>
+          <div class="empty-features"><span><b>01</b> Define the build</span><span><b>02</b> Find the gaps</span><span><b>03</b> Keep moving</span></div>
+        </div>
+
+        <div id="plan-content" hidden>
+          <!-- Generated project text and progress are populated safely by the local script. -->
+          <section class="project-overview" aria-labelledby="project-title">
+            <div class="project-title-group"><p class="eyebrow">Your project, in focus</p><h2 id="project-title" tabindex="-1"></h2><p id="project-summary"></p></div>
+            <!-- I expose progress as a named value that the script updates alongside the visible count. -->
+            <div class="progress-summary"><span class="progress-label">Project progress</span><strong id="progress-count">0 of 0</strong><span class="progress-caption">suggested steps complete</span><div id="progress-track" class="progress-track" role="progressbar" aria-label="Suggested steps completed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress-fill"></span></div></div>
+          </section>
+          <p id="draft-notice" class="draft-notice" hidden>Your brief has changed. Build a new plan to use those changes.</p>
+
+          <!-- The current action advances through the ordered route as the maker records completion. -->
+          <section id="current-action" class="current-action" aria-labelledby="current-title">
+            <div class="current-heading"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>Your next good move</p><span id="current-step-label" class="step-label"></span></div>
+            <div class="current-main"><span id="current-number" class="current-number" aria-hidden="true"></span><div><span id="current-phase" class="phase-label"></span><h3 id="current-title"></h3><p id="current-detail" class="current-detail"></p></div></div>
+            <div class="current-details"><div><span class="detail-label">Why this comes next</span><p id="current-why"></p></div><div><span class="detail-label">You’re ready to move on when</span><p id="current-done-when"></p></div></div>
+            <div id="current-note-group" class="current-note-group"><label for="outcome-note">Your working notes <span>Optional</span></label><textarea id="outcome-note" rows="2" maxlength="2000" placeholder="Measurements, decisions, or what you learned…"></textarea></div>
+            <div class="current-footer"><span id="completion-hint">Move at your pace. Check the result before moving on.</span><button id="complete-action" class="button button-amber" type="button"><span class="button-check" aria-hidden="true">✓</span><span>Mark step complete</span></button></div>
+          </section>
+
+          <!-- The complete route stays visible so makers can review dependencies and reopen prior work. -->
+          <section class="roadmap-section" aria-labelledby="roadmap-heading">
+            <div class="section-heading"><div><p class="eyebrow">One step leads to the next</p><h2 id="roadmap-heading">Your route to made</h2></div><span id="roadmap-count" class="quiet-label"></span></div>
+            <ol id="action-list" class="action-list"></ol>
+            <p class="roadmap-disclosure">These are suggested planning steps. Marking one complete records your progress; it does not verify the physical work.</p>
+          </section>
+
+          <!-- Requirements, unknowns, and risks keep planning assumptions visible alongside progress. -->
+          <section class="planning-details" aria-label="Project requirements and open questions">
+            <div class="detail-panel"><div class="detail-panel-heading"><span class="mini-icon" aria-hidden="true">↗</span><div><p class="eyebrow">Keep the target clear</p><h3>Build requirements</h3></div></div><ul id="requirements-list" class="fact-list"></ul></div>
+            <div class="detail-panel questions-panel"><div class="detail-panel-heading"><span class="mini-icon" aria-hidden="true">?</span><div><p class="eyebrow">Resolve before you commit</p><h3>Questions &amp; watch-outs</h3></div></div><ul id="missing-list" class="missing-list"></ul><ul id="risks-list" class="fact-list risk-list"></ul></div>
+          </section>
+
+          <!-- The resource summary reflects entered tools and materials without inventing inventory. -->
+          <section class="resources-panel" aria-labelledby="resources-heading"><div class="section-heading"><div><p class="eyebrow">Work with what you have</p><h2 id="resources-heading">At your workbench</h2></div><span class="quiet-label">From your brief</span></div><div class="resource-columns"><div><h3>Tools available</h3><ul id="tools-list" class="resource-list"></ul></div><div><h3>Materials on hand</h3><ul id="materials-list" class="resource-list"></ul></div></div><div class="constraints-summary"><span class="detail-label">Limits &amp; must-haves</span><p id="constraints-summary"></p></div></section>
+        </div>
+      </section>
+    </div>
+    <footer class="site-footer"><span class="footer-brand">ShopBrief.</span><span>Clarity before the first cut. Momentum after it.</span><span class="version-label">v{{ version }}</span></footer>
+    <!-- Announce generated plans and progress changes without moving keyboard focus unexpectedly. -->
+    <p id="status-message" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+  </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "shopbrief-capstone",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser workflow checks for the ShopBrief maker project workspace",
+  "scripts": {
+    "test:browser": "node tests/browser.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
